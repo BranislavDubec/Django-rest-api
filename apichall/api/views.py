@@ -1,9 +1,12 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
+from django.http import Http404
+
 from countries.models import Country
 from .serializers import CountrySerializer, CountryCreateSerializer
-from django.http import Http404
+from .pagination import CustomPagination
+
 
 
 
@@ -15,9 +18,17 @@ def handleCountries(request):
         return addCountry(request)
 
 def getCountries(request):
-    countries = Country.objects.all()
-    serializer = CountrySerializer(countries, many=True)
-    return Response(serializer.data)
+    country_code = request.query_params.get('country-code', None)
+    if country_code:
+        countries = Country.objects.filter(countryCode=country_code)
+    else:
+        countries = Country.objects.all()
+
+    paginator = CustomPagination()
+    paginated_countries = paginator.paginate_queryset(countries, request)
+    serializer = CountrySerializer(paginated_countries, many=True)
+
+    return  paginator.get_paginated_response(serializer.data)
 
 
 def addCountry(request):
