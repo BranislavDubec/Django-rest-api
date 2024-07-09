@@ -34,7 +34,9 @@ This is simple project to get hands on framework Django.
 
 ## Usage
 
-After successfull instalation, the project should be running on localhost on port 8000: http://127.0.0.1:8000/. E.g.:
+After successfull instalation, the project should be running on localhost on port 8000: http://127.0.0.1:8000/.
+Functionality can be tested via python manage.py test api. 
+ E.g.:
 #### Get
 - http://127.0.0.1:8000/countries/?country-code=CZ&limit=500&offset=0
 - http://127.0.0.1:8000/countries/?limit=2&offset=3
